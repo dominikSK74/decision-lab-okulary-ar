@@ -129,7 +129,7 @@ def select_anchor(anchor_list, width, height):
     
     return IOU.index(max(IOU))
 
-def prepare_labels(label_path):
+def prepare_labels(label_path, do_flip):
     """
     input: label path
     return: correctly filled-in matrix (20, 20, 3, 8)
@@ -157,6 +157,9 @@ def prepare_labels(label_path):
         height = float(values[4])
 
         # relative cords
+        if do_flip:
+            x_center = 1.0 - x_center
+        
         x = x_center * 20
         y = y_center * 20
         x_grid = int(np.floor(x))
@@ -183,13 +186,27 @@ def load_data(img_path, label_path):
     img.set_shape([640, 640, 3])
     img = tf.cast(img, tf.float32) / 255.0
 
+    do_flip = tf.random.uniform([], 0, 1) > 0.5
+    img = augument(img, do_flip)
+
     target = tf.py_function(
         func=prepare_labels,
-        inp=[label_path],
+        inp=[label_path, do_flip],
         Tout=tf.float64
     )
     target.set_shape([20, 20, 3, 8])
     return img, target
+
+
+
+def augument(img, do_flip):
+    img = tf.cond(do_flip, lambda: tf.image.flip_left_right(img), lambda: img)
+    img = tf.image.random_brightness(img, max_delta=0.2)
+    img = tf.image.random_contrast(img, lower=0.8, upper=1.2)
+    img = tf.image.random_saturation(img, lower=0.8, upper=1.2)
+    img = img + tf.random.normal(shape=tf.shape(img), mean=0.0, stddev=0.02)
+    img = tf.clip_by_value(img, 0.0, 1.0)
+    return img
 
 
 TRAIN_IMG_DIR = "data/letterbox/dataset-train/images/val"
@@ -220,7 +237,7 @@ model.compile(
 )
 model.summary()
 
-checkpoint_path = "dl-model-alfa-01.keras"
+checkpoint_path = "dl-model-alfa-02.keras"
 
 checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=checkpoint_path,
@@ -231,7 +248,7 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 )
 
 checkpoint_last = tf.keras.callbacks.ModelCheckpoint(
-    filepath="dl-model-alfa-01-last.keras",
+    filepath="dl-model-alfa-02-last.keras",
     save_best_only=False,
     save_freq='epoch',
     verbose=0
