@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
-model_path = "model/models/dl-model-alfa-0.keras"
+model_path = "dl-model-alfa-20-07-26-epoch20-17-77931-2D.keras"
 
 def dummy_loss(y_true, y_pred):
     return tf.reduce_mean(y_pred)
@@ -13,7 +13,7 @@ model = tf.keras.models.load_model(
 )
 
 
-img = cv2.imread("data/letterbox/dataset-train/images/val/0a00c6bec4656ddb.jpg")
+img = cv2.imread("data/letterbox/dataset-train/images/val/0517714716908733.jpg")
 original_height = img.shape[0]
 original_width = img.shape[1]
 input_tensor = np.expand_dims(img.astype(np.float32) / 255.0, axis=0)
@@ -24,8 +24,11 @@ for y in range(20):
         for anchor_idx in range(3):
             data = predictions[y, x, anchor_idx]
             
-            objectness = 1.0 / (1.0 + np.exp(-data[4]))
-            if objectness > 0.5:
+            # objectness = 1.0 / (1.0 + np.exp(-data[4]))
+            xx = np.clip(data[4], -87.0, 87.0)
+            # print(xx)
+            objectness = 1.0 / (1.0 + np.exp(-xx))
+            if objectness > 0.1:
                 class_id = int(np.argmax(data[5:8]))
                 
                 raw_x = data[0]
@@ -51,3 +54,6 @@ for y in range(20):
                 cv2.imshow("x", img)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
+            else:
+                # print("Nie wykryto")
+                pass

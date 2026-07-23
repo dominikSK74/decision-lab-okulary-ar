@@ -1,0 +1,220 @@
+Wersja TF: 2.21.0
+[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+I0000 00:00:1784535135.373559    1872 gpu_device.cc:2043] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 5561 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4060, pci bus id: 0000:06:00.0, compute capability: 8.9
+Model: "dl-model-alfa-0"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ input_layer_1 (InputLayer)           │ (None, 640, 640, 3)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 640, 640, 16)        │             432 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_9                │ (None, 640, 640, 16)        │              64 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_9 (ReLU)                       │ (None, 640, 640, 16)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_8 (SeparableConv2D) │ (None, 320, 320, 32)        │             656 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_10               │ (None, 320, 320, 32)        │             128 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_10 (ReLU)                      │ (None, 320, 320, 32)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_9 (SeparableConv2D) │ (None, 320, 320, 32)        │           1,312 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_11               │ (None, 320, 320, 32)        │             128 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_11 (ReLU)                      │ (None, 320, 320, 32)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_10                  │ (None, 160, 160, 64)        │           2,336 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_12               │ (None, 160, 160, 64)        │             256 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_12 (ReLU)                      │ (None, 160, 160, 64)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_11                  │ (None, 160, 160, 64)        │           4,672 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_13               │ (None, 160, 160, 64)        │             256 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_13 (ReLU)                      │ (None, 160, 160, 64)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_12                  │ (None, 80, 80, 128)         │           8,768 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_14               │ (None, 80, 80, 128)         │             512 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_14 (ReLU)                      │ (None, 80, 80, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_13                  │ (None, 40, 40, 256)         │          33,920 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_15               │ (None, 40, 40, 256)         │           1,024 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_15 (ReLU)                      │ (None, 40, 40, 256)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_14                  │ (None, 20, 20, 384)         │         100,608 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_16               │ (None, 20, 20, 384)         │           1,536 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_16 (ReLU)                      │ (None, 20, 20, 384)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ separable_conv2d_15                  │ (None, 20, 20, 384)         │         150,912 │
+│ (SeparableConv2D)                    │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_17               │ (None, 20, 20, 384)         │           1,536 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ re_lu_17 (ReLU)                      │ (None, 20, 20, 384)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 20, 20, 24)          │           9,240 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ reshape_1 (Reshape)                  │ (None, 20, 20, 3, 8)        │               0 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 318,296 (1.21 MB)
+ Trainable params: 315,576 (1.20 MB)
+ Non-trainable params: 2,720 (10.62 KB)
+
+[INFO] Rozpoczynam uczenie sieci...
+Epoch 1/50
+I0000 00:00:1784535141.660315    1960 service.cc:153] XLA service 0x716f1404a400 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1784535141.660354    1960 service.cc:161]   StreamExecutor [0]: NVIDIA GeForce RTX 4060, Compute Capability 8.9 (Driver: 13.3.0; Runtime: 12.9.0; Toolkit: 12.5.0; DNN: 9.22.0)
+I0000 00:00:1784535142.144354    1960 dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+I0000 00:00:1784535142.808006    1960 cuda_dnn.cc:461] Loaded cuDNN version 92200
+I0000 00:00:1784535226.828522    1960 device_compiler.h:208] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 367ms/step - loss: 78.5724     
+Epoch 1: val_loss improved from None to 19.81002, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 1: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 282s 410ms/step - loss: 37.8159 - val_loss: 19.8100 - learning_rate: 0.0010
+Epoch 2/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 235ms/step - loss: 24.0522  
+Epoch 2: val_loss improved from 19.81002 to 17.17015, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 2: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 246ms/step - loss: 23.7290 - val_loss: 17.1702 - learning_rate: 0.0010
+Epoch 3/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 234ms/step - loss: 22.8289  
+Epoch 3: val_loss improved from 17.17015 to 16.43832, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 3: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 244ms/step - loss: 22.4498 - val_loss: 16.4383 - learning_rate: 0.0010
+Epoch 4/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 234ms/step - loss: 21.4496  
+Epoch 4: val_loss improved from 16.43832 to 15.95783, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 4: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 244ms/step - loss: 21.5021 - val_loss: 15.9578 - learning_rate: 0.0010
+Epoch 5/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 229ms/step - loss: 20.8685  
+Epoch 5: val_loss did not improve from 15.95783
+469/469 ━━━━━━━━━━━━━━━━━━━━ 112s 239ms/step - loss: 20.7509 - val_loss: 16.4774 - learning_rate: 0.0010
+Epoch 6/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 233ms/step - loss: 20.5725  
+Epoch 6: val_loss improved from 15.95783 to 14.77805, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 6: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 244ms/step - loss: 20.2343 - val_loss: 14.7781 - learning_rate: 0.0010
+Epoch 7/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 213ms/step - loss: 19.7909  
+Epoch 7: val_loss did not improve from 14.77805
+469/469 ━━━━━━━━━━━━━━━━━━━━ 105s 224ms/step - loss: 19.7231 - val_loss: 17.3676 - learning_rate: 0.0010
+Epoch 8/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 230ms/step - loss: 19.5349  
+Epoch 8: val_loss improved from 14.77805 to 14.46101, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 8: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 113s 241ms/step - loss: 19.3605 - val_loss: 14.4610 - learning_rate: 0.0010
+Epoch 9/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 229ms/step - loss: 19.2979  
+Epoch 9: val_loss did not improve from 14.46101
+469/469 ━━━━━━━━━━━━━━━━━━━━ 112s 239ms/step - loss: 19.0663 - val_loss: 14.5545 - learning_rate: 0.0010
+Epoch 10/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 235ms/step - loss: 18.5037  
+Epoch 10: val_loss did not improve from 14.46101
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 245ms/step - loss: 18.8151 - val_loss: 16.1680 - learning_rate: 0.0010
+Epoch 11/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 237ms/step - loss: 18.6155  
+Epoch 11: val_loss did not improve from 14.46101
+469/469 ━━━━━━━━━━━━━━━━━━━━ 116s 247ms/step - loss: 18.4922 - val_loss: 15.1886 - learning_rate: 0.0010
+Epoch 12/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 239ms/step - loss: 18.4243  
+Epoch 12: val_loss did not improve from 14.46101
+
+Epoch 12: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+469/469 ━━━━━━━━━━━━━━━━━━━━ 117s 250ms/step - loss: 18.3057 - val_loss: 14.6342 - learning_rate: 0.0010
+Epoch 13/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 219ms/step - loss: 17.7357  
+Epoch 13: val_loss improved from 14.46101 to 14.29838, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 13: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 108s 230ms/step - loss: 17.6489 - val_loss: 14.2984 - learning_rate: 5.0000e-04
+Epoch 14/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 238ms/step - loss: 17.1489  
+Epoch 14: val_loss did not improve from 14.29838
+469/469 ━━━━━━━━━━━━━━━━━━━━ 117s 249ms/step - loss: 17.4217 - val_loss: 14.5249 - learning_rate: 5.0000e-04
+Epoch 15/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 215ms/step - loss: 17.4879  
+Epoch 15: val_loss improved from 14.29838 to 14.01904, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 15: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 106s 225ms/step - loss: 17.2498 - val_loss: 14.0190 - learning_rate: 5.0000e-04
+Epoch 16/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 239ms/step - loss: 16.9513  
+Epoch 16: val_loss improved from 14.01904 to 13.86018, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 16: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 117s 249ms/step - loss: 17.0848 - val_loss: 13.8602 - learning_rate: 5.0000e-04
+Epoch 17/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 239ms/step - loss: 16.9094  
+Epoch 17: val_loss improved from 13.86018 to 13.62503, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 17: finished saving model to dl-model-alfa-20-07-26.keras
+469/469 ━━━━━━━━━━━━━━━━━━━━ 117s 249ms/step - loss: 16.9920 - val_loss: 13.6250 - learning_rate: 5.0000e-04
+Epoch 18/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 229ms/step - loss: 16.7546  
+Epoch 18: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 112s 239ms/step - loss: 16.8318 - val_loss: 15.0452 - learning_rate: 5.0000e-04
+Epoch 19/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 231ms/step - loss: 16.7049  
+Epoch 19: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 113s 241ms/step - loss: 16.7157 - val_loss: 14.5711 - learning_rate: 5.0000e-04
+Epoch 20/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 215ms/step - loss: 16.5595  
+Epoch 20: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 106s 225ms/step - loss: 16.5833 - val_loss: 14.3831 - learning_rate: 5.0000e-04
+Epoch 21/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 215ms/step - loss: 16.3359  
+Epoch 21: val_loss did not improve from 13.62503
+
+Epoch 21: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+469/469 ━━━━━━━━━━━━━━━━━━━━ 106s 225ms/step - loss: 16.4663 - val_loss: 14.3743 - learning_rate: 5.0000e-04
+Epoch 22/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 239ms/step - loss: 15.8604  
+Epoch 22: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 117s 249ms/step - loss: 16.0108 - val_loss: 13.9612 - learning_rate: 2.5000e-04
+Epoch 23/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 238ms/step - loss: 15.9168  
+Epoch 23: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 116s 248ms/step - loss: 15.8401 - val_loss: 14.0808 - learning_rate: 2.5000e-04
+Epoch 24/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 235ms/step - loss: 15.7632  
+Epoch 24: val_loss did not improve from 13.62503
+469/469 ━━━━━━━━━━━━━━━━━━━━ 115s 245ms/step - loss: 15.7467 - val_loss: 15.2255 - learning_rate: 2.5000e-04
+Epoch 25/50
+469/469 ━━━━━━━━━━━━━━━━━━━━ 0s 243ms/step - loss: 15.4800  
+Epoch 25: val_loss did not improve from 13.62503
+
+Epoch 25: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+469/469 ━━━━━━━━━━━━━━━━━━━━ 119s 254ms/step - loss: 15.6662 - val_loss: 14.4518 - learning_rate: 2.5000e-04
+Epoch 25: early stopping
+Restoring model weights from the end of the best epoch: 17.
