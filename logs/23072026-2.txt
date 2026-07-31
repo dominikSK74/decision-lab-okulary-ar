@@ -1,0 +1,2 @@
+last: 37 epoch
+best: 34 epoch

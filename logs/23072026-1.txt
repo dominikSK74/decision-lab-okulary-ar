@@ -1,0 +1,207 @@
+.3858962947048955, 0.21452508577356538], [0.25540286432015247, 0.5375565284810128], [0.8443872580338618, 0.3197129541097482], [0.5381868608290955, 0.5494917155630178], [0.4888862315068654, 0.8589415099983196], [0.914015619721052, 0.6403318092020158]]
+I0000 00:00:1784788931.246484   20055 gpu_device.cc:2043] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 5561 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4060, pci bus id: 0000:06:00.0, compute capability: 8.9
+Model: "dl-model-alfa-2"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)      │ (None, 640, 640, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d (Conv2D)               │ (None, 640, 640, 48)      │           1,296 │ input_layer[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization           │ (None, 640, 640, 48)      │             192 │ conv2d[0][0]               │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu (ReLU)                  │ (None, 640, 640, 48)      │               0 │ batch_normalization[0][0]  │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d              │ (None, 320, 320, 96)      │           5,040 │ re_lu[0][0]                │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_1         │ (None, 320, 320, 96)      │             384 │ separable_conv2d[0][0]     │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_1 (ReLU)                │ (None, 320, 320, 96)      │               0 │ batch_normalization_1[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_1            │ (None, 320, 320, 96)      │          10,080 │ re_lu_1[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_2         │ (None, 320, 320, 96)      │             384 │ separable_conv2d_1[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_2 (ReLU)                │ (None, 320, 320, 96)      │               0 │ batch_normalization_2[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_2            │ (None, 160, 160, 192)     │          19,296 │ re_lu_2[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_3         │ (None, 160, 160, 192)     │             768 │ separable_conv2d_2[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_3 (ReLU)                │ (None, 160, 160, 192)     │               0 │ batch_normalization_3[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_3            │ (None, 160, 160, 192)     │          38,592 │ re_lu_3[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_4         │ (None, 160, 160, 192)     │             768 │ separable_conv2d_3[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_4 (ReLU)                │ (None, 160, 160, 192)     │               0 │ batch_normalization_4[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_4            │ (None, 80, 80, 320)       │          63,168 │ re_lu_4[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_5         │ (None, 80, 80, 320)       │           1,280 │ separable_conv2d_4[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_5 (ReLU)                │ (None, 80, 80, 320)       │               0 │ batch_normalization_5[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_5            │ (None, 80, 80, 320)       │         105,280 │ re_lu_5[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_6         │ (None, 80, 80, 320)       │           1,280 │ separable_conv2d_5[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_6 (ReLU)                │ (None, 80, 80, 320)       │               0 │ batch_normalization_6[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_6            │ (None, 40, 40, 480)       │         156,480 │ re_lu_6[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_7         │ (None, 40, 40, 480)       │           1,920 │ separable_conv2d_6[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_7 (ReLU)                │ (None, 40, 40, 480)       │               0 │ batch_normalization_7[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_7            │ (None, 40, 40, 480)       │         234,720 │ re_lu_7[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_8         │ (None, 40, 40, 480)       │           1,920 │ separable_conv2d_7[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_8 (ReLU)                │ (None, 40, 40, 480)       │               0 │ batch_normalization_8[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_8            │ (None, 20, 20, 768)       │         372,960 │ re_lu_8[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_9         │ (None, 20, 20, 768)       │           3,072 │ separable_conv2d_8[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_9 (ReLU)                │ (None, 20, 20, 768)       │               0 │ batch_normalization_9[0][… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ separable_conv2d_9            │ (None, 20, 20, 768)       │         596,736 │ re_lu_9[0][0]              │
+│ (SeparableConv2D)             │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_10        │ (None, 20, 20, 768)       │           3,072 │ separable_conv2d_9[0][0]   │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ re_lu_10 (ReLU)               │ (None, 20, 20, 768)       │               0 │ batch_normalization_10[0]… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv_large (Conv2D)           │ (None, 20, 20, 24)        │          18,456 │ re_lu_10[0][0]             │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv_medium (Conv2D)          │ (None, 40, 40, 24)        │          11,544 │ re_lu_8[0][0]              │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv_small (Conv2D)           │ (None, 80, 80, 24)        │           7,704 │ re_lu_6[0][0]              │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ out_large (Reshape)           │ (None, 20, 20, 3, 8)      │               0 │ conv_large[0][0]           │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ out_medium (Reshape)          │ (None, 40, 40, 3, 8)      │               0 │ conv_medium[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ out_small (Reshape)           │ (None, 80, 80, 3, 8)      │               0 │ conv_small[0][0]           │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 1,656,392 (6.32 MB)
+ Trainable params: 1,648,872 (6.29 MB)
+ Non-trainable params: 7,520 (29.38 KB)
+
+[INFO] Rozpoczynam uczenie sieci...
+Epoch 1/50
+I0000 00:00:1784788938.099613   20150 service.cc:153] XLA service 0x75529024ea00 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1784788938.099721   20150 service.cc:161]   StreamExecutor [0]: NVIDIA GeForce RTX 4060, Compute Capability 8.9 (Driver: 13.3.0; Runtime: 12.9.0; Toolkit: 12.5.0; DNN: 9.22.0)
+I0000 00:00:1784788938.521344   20150 dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+I0000 00:00:1784788939.456786   20150 cuda_dnn.cc:461] Loaded cuDNN version 92200
+W0000 00:00:1784788954.321972   20150 bfc_allocator.cc:383] Garbage collection: deallocate free memory regions (i.e., allocations) so that we can re-allocate a larger region to avoid OOM due to memory fragmentation. If you see this message frequently, you are running near the threshold of the available device memory and re-allocation may incur great performance overhead. You may try smaller batch sizes to observe the performance impact. Set TF_ENABLE_GPU_GARBAGE_COLLECTION=false if you'd like to disable this feature.
+I0000 00:00:1784789000.215376   20150 device_compiler.h:208] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 108ms/step - loss: 32.7555 - out_large_loss: 20.6699 - out_medium_loss: 7.2264 - out_small_loss: 4.5124      
+Epoch 1: val_loss improved from None to 1323.40210, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 1: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 287s 117ms/step - loss: 28.7992 - out_large_loss: 19.5324 - out_medium_loss: 5.3026 - out_small_loss: 3.6102 - val_loss: 1323.4021 - val_out_large_loss: 1254.1025 - val_out_medium_loss: 29.0915 - val_out_small_loss: 39.8454 - learning_rate: 0.0010
+Epoch 2/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 100ms/step - loss: 23.2159 - out_large_loss: 11.8301 - out_medium_loss: 8.0449 - out_small_loss: 2.9691  
+Epoch 2: val_loss improved from 1323.40210 to 10.76363, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 2: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 200s 107ms/step - loss: 19.9056 - out_large_loss: 9.0121 - out_medium_loss: 7.6825 - out_small_loss: 2.8284 - val_loss: 10.7636 - val_out_large_loss: 3.5224 - val_out_medium_loss: 4.2544 - val_out_small_loss: 2.5924 - learning_rate: 0.0010
+Epoch 3/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 106ms/step - loss: 27.7774 - out_large_loss: 17.5629 - out_medium_loss: 6.6270 - out_small_loss: 3.1684  
+Epoch 3: val_loss did not improve from 10.76363
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 211s 112ms/step - loss: 40.5362 - out_large_loss: 31.0992 - out_medium_loss: 5.6359 - out_small_loss: 3.3524 - val_loss: 10.9716 - val_out_large_loss: 5.2292 - val_out_medium_loss: 2.7015 - val_out_small_loss: 2.4991 - learning_rate: 0.0010
+Epoch 4/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 101ms/step - loss: 18.7978 - out_large_loss: 12.3175 - out_medium_loss: 3.1474 - out_small_loss: 2.7790    
+Epoch 4: val_loss improved from 10.76363 to 9.30205, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 4: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 201s 107ms/step - loss: 10.5610 - out_large_loss: 4.7127 - out_medium_loss: 2.7843 - out_small_loss: 2.5150 - val_loss: 9.3021 - val_out_large_loss: 3.6442 - val_out_medium_loss: 2.6784 - val_out_small_loss: 2.4429 - learning_rate: 0.0010
+Epoch 5/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 100ms/step - loss: 8.9332 - out_large_loss: 3.3530 - out_medium_loss: 2.6798 - out_small_loss: 2.3706  
+Epoch 5: val_loss did not improve from 9.30205
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 199s 106ms/step - loss: 10.1943 - out_large_loss: 3.5346 - out_medium_loss: 3.7370 - out_small_loss: 2.4000 - val_loss: 2591.4160 - val_out_large_loss: 467.5474 - val_out_medium_loss: 2086.9771 - val_out_small_loss: 36.3782 - learning_rate: 0.0010
+Epoch 6/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 100ms/step - loss: 22.0542 - out_large_loss: 15.1452 - out_medium_loss: 3.8211 - out_small_loss: 2.4864  
+Epoch 6: val_loss improved from 9.30205 to 8.76191, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 6: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 199s 106ms/step - loss: 15.2558 - out_large_loss: 8.9895 - out_medium_loss: 3.1950 - out_small_loss: 2.4398 - val_loss: 8.7619 - val_out_large_loss: 2.9470 - val_out_medium_loss: 2.8728 - val_out_small_loss: 2.3163 - learning_rate: 0.0010
+Epoch 7/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - loss: 8.2766 - out_large_loss: 2.6405 - out_medium_loss: 2.6901 - out_small_loss: 2.3399  
+Epoch 7: val_loss did not improve from 8.76191
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 208s 111ms/step - loss: 8.2268 - out_large_loss: 2.5922 - out_medium_loss: 2.7346 - out_small_loss: 2.3140 - val_loss: 9.0236 - val_out_large_loss: 2.8754 - val_out_medium_loss: 3.3160 - val_out_small_loss: 2.2863 - learning_rate: 0.0010
+Epoch 8/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 100ms/step - loss: 7.8783 - out_large_loss: 2.4809 - out_medium_loss: 2.5973 - out_small_loss: 2.2790  
+Epoch 8: val_loss improved from 8.76191 to 7.73553, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 8: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 199s 106ms/step - loss: 7.8240 - out_large_loss: 2.4497 - out_medium_loss: 2.6112 - out_small_loss: 2.2658 - val_loss: 7.7355 - val_out_large_loss: 2.5529 - val_out_medium_loss: 2.4361 - val_out_small_loss: 2.2958 - learning_rate: 0.0010
+Epoch 9/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 101ms/step - loss: 7.5088 - out_large_loss: 2.3547 - out_medium_loss: 2.4686 - out_small_loss: 2.2553  
+Epoch 9: val_loss improved from 7.73553 to 7.68181, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 9: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 201s 107ms/step - loss: 7.3845 - out_large_loss: 2.3692 - out_medium_loss: 2.3758 - out_small_loss: 2.2335 - val_loss: 7.6818 - val_out_large_loss: 2.6222 - val_out_medium_loss: 2.3870 - val_out_small_loss: 2.3148 - learning_rate: 0.0010
+Epoch 10/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 114ms/step - loss: 7.7427 - out_large_loss: 2.3324 - out_medium_loss: 2.8596 - out_small_loss: 2.2065  
+Epoch 10: val_loss improved from 7.68181 to 7.19747, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 10: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 226s 121ms/step - loss: 7.6208 - out_large_loss: 2.3088 - out_medium_loss: 2.7695 - out_small_loss: 2.2099 - val_loss: 7.1975 - val_out_large_loss: 2.4310 - val_out_medium_loss: 2.2498 - val_out_small_loss: 2.2186 - learning_rate: 0.0010
+Epoch 11/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 123ms/step - loss: 6.8128 - out_large_loss: 2.2359 - out_medium_loss: 2.1208 - out_small_loss: 2.1763  
+Epoch 11: val_loss did not improve from 7.19747
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 242s 129ms/step - loss: 6.7687 - out_large_loss: 2.2240 - out_medium_loss: 2.1136 - out_small_loss: 2.1676 - val_loss: 8.2895 - val_out_large_loss: 3.7230 - val_out_medium_loss: 2.1662 - val_out_small_loss: 2.1645 - learning_rate: 0.0010
+Epoch 12/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 123ms/step - loss: 6.6217 - out_large_loss: 2.1760 - out_medium_loss: 2.0531 - out_small_loss: 2.1652  
+Epoch 12: val_loss improved from 7.19747 to 6.95088, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 12: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 243s 130ms/step - loss: 6.6273 - out_large_loss: 2.1823 - out_medium_loss: 2.0629 - out_small_loss: 2.1590 - val_loss: 6.9509 - val_out_large_loss: 2.3450 - val_out_medium_loss: 2.2226 - val_out_small_loss: 2.1705 - learning_rate: 0.0010
+Epoch 13/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 128ms/step - loss: 6.4862 - out_large_loss: 2.1368 - out_medium_loss: 2.0054 - out_small_loss: 2.1403  
+Epoch 13: val_loss improved from 6.95088 to 6.67613, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 13: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 252s 134ms/step - loss: 6.4890 - out_large_loss: 2.1402 - out_medium_loss: 2.0247 - out_small_loss: 2.1291 - val_loss: 6.6761 - val_out_large_loss: 2.2840 - val_out_medium_loss: 2.0844 - val_out_small_loss: 2.1286 - learning_rate: 0.0010
+Epoch 14/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 101ms/step - loss: 6.3616 - out_large_loss: 2.0788 - out_medium_loss: 2.0028 - out_small_loss: 2.1086  
+Epoch 14: val_loss improved from 6.67613 to 6.66229, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 14: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 201s 107ms/step - loss: 6.3804 - out_large_loss: 2.0914 - out_medium_loss: 2.0063 - out_small_loss: 2.1164 - val_loss: 6.6623 - val_out_large_loss: 2.2370 - val_out_medium_loss: 2.1261 - val_out_small_loss: 2.1373 - learning_rate: 0.0010
+Epoch 15/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 101ms/step - loss: 6.3496 - out_large_loss: 2.0885 - out_medium_loss: 1.9897 - out_small_loss: 2.1123  
+Epoch 15: val_loss did not improve from 6.66229
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 201s 107ms/step - loss: 6.3441 - out_large_loss: 2.1019 - out_medium_loss: 1.9844 - out_small_loss: 2.1028 - val_loss: 6.7707 - val_out_large_loss: 2.4176 - val_out_medium_loss: 2.0834 - val_out_small_loss: 2.1196 - learning_rate: 0.0010
+Epoch 16/50
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 0s 100ms/step - loss: 6.2727 - out_large_loss: 2.0721 - out_medium_loss: 1.9540 - out_small_loss: 2.0991  
+Epoch 16: val_loss improved from 6.66229 to 6.56104, saving model to dl-model-alfa-20-07-26.keras
+
+Epoch 16: finished saving model to dl-model-alfa-20-07-26.keras
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 200s 106ms/step - loss: 6.2766 - out_large_loss: 2.0593 - out_medium_loss: 1.9735 - out_small_loss: 2.0975 - val_loss: 6.5610 - val_out_large_loss: 2.2783 - val_out_medium_loss: 2.0201 - val_out_small_loss: 2.1152 - learning_rate: 0.0010
+Epoch 17/50
+  82/1875 ━━━━━━━━━━━━━━━━━━━━ 3:09 105ms/step - loss: 6.6856 - out_large_loss: 2.1539 - out_medium_loss: 2.1479 - out_small_loss: 2.2366^Z
+[1]+  Stopped                    /home/domin/decision-lab-okulary-ar/.venv/bin/python /home/domin/decision-lab-okulary-ar/model/build_model.py

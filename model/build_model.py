@@ -5,11 +5,17 @@ import os
 from tensorflow.keras import mixed_precision
 from tensorflow.keras.regularizers import l2
 from sklearn.cluster import KMeans
+import os
+from datetime import datetime
 
 mixed_precision.set_global_policy('mixed_float16')
 
 print("Wersja TF:", tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
+
+gpus = tf.config.list_physical_devices('GPU')
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
 
 
 def create_model(input_shape=(640, 640, 3)):
@@ -76,7 +82,78 @@ def create_model(input_shape=(640, 640, 3)):
     model = models.Model(inputs=inputs, outputs=[out_large, out_small], name="dl-model-alfa-1")
     return model
 
-# model = create_model()
+def model_v2_alfa(input_shape=(640, 640, 3)):
+    inputs = layers.Input(shape=input_shape)
+
+    L2_VALUE = 1e-4
+
+    x = layers.Conv2D(filters=48, kernel_size=3, strides=1, padding='same', use_bias=False, kernel_regularizer=l2(L2_VALUE))(inputs)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=96, kernel_size=3, strides=2, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=96, kernel_size=3, strides=1, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=192, kernel_size=3, strides=2, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=192, kernel_size=3, strides=1, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=320, kernel_size=3, strides=2, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=320, kernel_size=3, strides=1, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x_80 = x
+
+    x = layers.SeparableConv2D(filters=480, kernel_size=3, strides=2, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=480, kernel_size=3, strides=1, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x_40 = x
+
+    x = layers.SeparableConv2D(filters=768, kernel_size=3, strides=2, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x = layers.SeparableConv2D(filters=768, kernel_size=3, strides=1, padding='same', use_bias=False, depthwise_regularizer=l2(L2_VALUE), pointwise_regularizer=l2(L2_VALUE))(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+
+    x_20 = x
+
+    # siatka dla 20x20
+    out_large = layers.Conv2D(24, 1, activation='linear', dtype='float32', name='conv_large')(x_20)
+    out_large = layers.Reshape((20, 20, 3, 8), name='out_large')(out_large)
+
+    # siatka dla 40x40
+    out_medium = layers.Conv2D(24, 1, activation='linear', dtype='float32', name='conv_medium')(x_40)
+    out_medium = layers.Reshape((40, 40, 3, 8), name='out_medium')(out_medium)
+
+    # siatka dla 80x80
+    out_small = layers.Conv2D(24, 1, activation='linear', dtype='float32', name='conv_small')(x_80)
+    out_small = layers.Reshape((80, 80, 3, 8), name='out_small')(out_small)
+
+    model = models.Model(inputs=inputs, outputs=[out_large, out_medium, out_small], name="dl-model-alfa-2")
+    return model
+
+
+
 
 def loss_function(y_true, y_pred):
     """
@@ -153,7 +230,8 @@ def prepare_labels(label_path, do_flip):
 
     # matrix = np.zeros((20, 20, 3, 8))
     matrix_large = np.zeros((20, 20, 3, 8))
-    matrix_small = np.zeros((40, 40, 3, 8))
+    matrix_medium = np.zeros((40, 40, 3, 8))
+    matrix_small = np.zeros((80, 80, 3, 8))
 
     if hasattr(label_path, 'numpy'):
         label_path = label_path.numpy()
@@ -184,28 +262,28 @@ def prepare_labels(label_path, do_flip):
 
         best_anchor_index = select_anchor(ANCHORS_ALL, width, height)
 
-        if best_anchor_index >= 3:
+        if best_anchor_index >= 6:
             grid_size = 20
-            anchor_idx = best_anchor_index - 3   
-            x = x_center * grid_size
-            y = y_center * grid_size
-            x_grid = int(np.floor(x))
-            y_grid = int(np.floor(y))
-            relative_x = x - x_grid
-            relative_y = y - y_grid
-            matrix_large[y_grid, x_grid, anchor_idx] = [relative_x, relative_y, width, height, 1] + one_hot
-        else:
+            anchor_idx = best_anchor_index - 6
+            target_matrix = matrix_large
+        elif best_anchor_index >= 3:
             grid_size = 40
+            anchor_idx = best_anchor_index - 3
+            target_matrix = matrix_medium
+        else:
+            grid_size = 20
             anchor_idx = best_anchor_index
-            x = x_center * grid_size
-            y = y_center * grid_size
-            x_grid = int(np.floor(x))
-            y_grid = int(np.floor(y))
-            relative_x = x - x_grid
-            relative_y = y - y_grid
-            matrix_small[y_grid, x_grid, anchor_idx] = [relative_x, relative_y, width, height, 1] + one_hot
+            target_matrix = matrix_small
 
-    return matrix_large, matrix_small
+        x = x_center * grid_size
+        y = y_center * grid_size
+        x_grid = int(np.floor(x))
+        y_grid = int(np.floor(y))
+        relative_x = x - x_grid
+        relative_y = y - y_grid
+        target_matrix[y_grid, x_grid, anchor_idx] = [relative_x, relative_y, width, height, 1] + one_hot
+
+    return matrix_large, matrix_medium, matrix_small
 
 def load_data(img_path, label_path, training = True):
     img = tf.io.read_file(img_path)
@@ -219,14 +297,15 @@ def load_data(img_path, label_path, training = True):
     else:
         do_flip = tf.constant(False)
 
-    target_large, target_small = tf.py_function(
+    target_large, target_medium, target_small = tf.py_function(
         func=prepare_labels,
         inp=[label_path, do_flip],
-        Tout=[tf.float64, tf.float64]
+        Tout=[tf.float64, tf.float64, tf.float64]
     )
     target_large.set_shape([20, 20, 3, 8])
-    target_small.set_shape([40, 40, 3, 8])
-    return img, (target_large, target_small)
+    target_medium.set_shape([40, 40, 3, 8])
+    target_small.set_shape([80, 80, 3, 8])
+    return img, (target_large, target_medium, target_small)
 
 
 
@@ -259,16 +338,17 @@ VALIDATION_LABELS_DIR = "data/letterbox/dataset-validation/labels/val"
 
 train_img_files = sorted([os.path.join(TRAIN_IMG_DIR, f) for f in os.listdir(TRAIN_IMG_DIR) if f.endswith('.jpg')])
 train_label_files = sorted([os.path.join(TRAIN_LABELS_DIR, f) for f in os.listdir(TRAIN_LABELS_DIR) if f.endswith('.txt')])
-ANCHORS_ALL = compute_anchors(train_label_files, n_anchors=6)
-ANCHORS_SMALL = ANCHORS_ALL[:3]
-ANCHORS_LARGE = ANCHORS_ALL[3:]
+ANCHORS_ALL = compute_anchors(train_label_files, n_anchors=9)
+ANCHORS_SMALL = ANCHORS_ALL[0:3] # 80x80
+ANCHORS_MEDIUM = ANCHORS_ALL[3:6] #40x40
+ANCHORS_LARGE = ANCHORS_ALL[6:9] #20x20
 print("Wyliczone anchory:", ANCHORS_ALL)
 
 
 val_img_files = sorted([os.path.join(VALIDATION_IMG_DIR, f) for f in os.listdir(VALIDATION_IMG_DIR) if f.endswith('.jpg')])
 val_label_files = sorted([os.path.join(VALIDATION_LABELS_DIR, f) for f in os.listdir(VALIDATION_LABELS_DIR) if f.endswith('.txt')])
 
-BATCH_SIZE = 32
+BATCH_SIZE = 8
 train_path_ds = tf.data.Dataset.from_tensor_slices((train_img_files, train_label_files))
 # train_dataset = train_path_ds.map(load_data, num_parallel_calls=tf.data.AUTOTUNE)
 
@@ -283,27 +363,30 @@ val_path_ds = tf.data.Dataset.from_tensor_slices((val_img_files, val_label_files
 val_dataset = val_path_ds.map(lambda i, l: load_data(i, l, training=False), num_parallel_calls=tf.data.AUTOTUNE)
 val_dataset = val_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
 
-model = create_model(input_shape=(640, 640, 3))
+# model = create_model(input_shape=(640, 640, 3))
+# model = model_v2_alfa(input_shape=(640, 640, 3))
 
-model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-    loss={
-        'out_large': loss_function,
-        'out_small': loss_function
-    },
-    loss_weights={
-        'out_large': 1.0,
-        'out_small': 1.0
-    }
-)
-model.summary()
-
-# model = tf.keras.models.load_model(
-#     "dl-model-alfa-20-07-26-epoch17-13-62503-loss.keras",
-#     custom_objects={"loss_function": loss_function}
+# model.compile(
+#     optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+#     loss={
+#         'out_large': loss_function,
+#         'out_medium': loss_function,
+#         'out_small': loss_function
+#     },
+#     loss_weights={
+#         'out_large': 1.0,
+#         'out_medium': 1.0,
+#         'out_small': 1.0
+#     }
 # )
+# model.summary()
 
-checkpoint_path = "dl-model-alfa-20-07-26.keras"
+model = tf.keras.models.load_model(
+    "dl-model-alfa-23-07-26-16epoch-1.keras",
+    custom_objects={"loss_function": loss_function}
+)
+
+checkpoint_path = "dl-model-alfa-23-07-26.keras"
 
 checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=checkpoint_path,
@@ -314,7 +397,7 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 )
 
 checkpoint_last = tf.keras.callbacks.ModelCheckpoint(
-    filepath="dl-model-alfa-20-07-26-last.keras",
+    filepath="dl-model-alfa-23-07-26-last.keras",
     save_best_only=False,
     save_freq='epoch',
     verbose=0
@@ -335,12 +418,33 @@ reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(
     verbose=1
 )
 
+log_filename = datetime.now().strftime("training_log_%d-%m-%Y_%H-%M-%S.csv")
+log_path = os.path.join("logs", log_filename)
+csv_logger = tf.keras.callbacks.CSVLogger(log_path, append=True)
+
 print("\n[INFO] Rozpoczynam uczenie sieci...")
 
 history = model.fit(
     train_dataset,
     validation_data=val_dataset,
     epochs=50,
-    # initial_epoch=17,
-    callbacks=[checkpoint_callback, checkpoint_last, early_stopping, reduce_lr]
+    initial_epoch=16,
+    callbacks=[checkpoint_callback, checkpoint_last, early_stopping, reduce_lr, csv_logger]
 )
+
+
+
+# CHECK
+# model = tf.keras.models.load_model(
+#     "dl-model-alfa-23-07-26.keras",
+#     custom_objects={"loss_function": loss_function}
+# )
+
+# iterations = model.optimizer.iterations.numpy()
+# print("Liczba wykonanych kroków (batchy):", iterations)
+
+# steps_per_epoch = sum(1 for _ in train_dataset)
+# print("Kroków na epokę:", steps_per_epoch)
+
+# estimated_epoch = iterations / steps_per_epoch
+# print("Szacowana ukończona epoka:", estimated_epoch)
