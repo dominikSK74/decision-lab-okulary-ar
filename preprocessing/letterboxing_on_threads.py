@@ -2,9 +2,9 @@ from concurrent.futures import ThreadPoolExecutor
 import glob
 from letterbox import letterbox
 
-paths = glob.glob("data/dataset-train/images/val/*")
-output_image = 'data/letterbox/dataset-train/images/val'
-output_label = 'data/letterbox/dataset-train/labels/val'
+paths = glob.glob("data2/mustprepare/dataset-validation/images/*")
+output_image = 'data2/dataset-validation/images'
+output_label = 'data2/dataset-validation/labels'
 
 def letterbox_try(image_path, label_path, output_image_path, output_label_path):
     try:
